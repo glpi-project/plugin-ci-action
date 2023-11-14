@@ -69,7 +69,7 @@ jobs:
         run: |
           if [[ -f "vendor/bin/parallel-lint" ]]; then
             echo -e "\033[0;33mExecuting PHP Parallel Lint...\033[0m"
-            vendor/bin/parallel-lint --colors --exclude ./vendor/ --no-progress .
+            vendor/bin/parallel-lint --colors --exclude ./lib/ --exclude ./node_modules/ --exclude ./vendor/ --no-progress .
           else
             echo -e "\033[PHP Parallel Lint execution skipped.\033[0m"
           fi
