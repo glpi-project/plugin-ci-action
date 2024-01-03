@@ -71,7 +71,7 @@ jobs:
             echo -e "\033[0;33mExecuting PHP Parallel Lint...\033[0m"
             vendor/bin/parallel-lint --colors --exclude ./lib/ --exclude ./node_modules/ --exclude ./vendor/ --no-progress .
           else
-            echo -e "\033[PHP Parallel Lint execution skipped.\033[0m"
+            echo -e "\033[0;33mPHP Parallel Lint execution skipped.\033[0m"
           fi
       - name: "PHP CodeSniffer"
         run: |
@@ -79,7 +79,7 @@ jobs:
             echo -e "\033[0;33mExecuting PHP CodeSniffer...\033[0m"
             vendor/bin/phpcs
           else
-            echo -e "\033[PHP CodeSniffer execution skipped.\033[0m"
+            echo -e "\033[0;33mPHP CodeSniffer execution skipped.\033[0m"
           fi
       - name: "PHPStan"
         run: |
@@ -87,7 +87,7 @@ jobs:
             echo -e "\033[0;33mExecuting PHPStan...\033[0m"
             vendor/bin/phpstan analyze --ansi --memory-limit=2G --no-interaction --no-progress
           else
-            echo -e "\033[PHPStan execution skipped.\033[0m"
+            echo -e "\033[0;33mPHPStan execution skipped.\033[0m"
           fi
       - name: "JS Lint"
         run: |
@@ -125,5 +125,5 @@ jobs:
             echo -e "\033[0;33mExecuting PHPUnit...\033[0m"
             php vendor/bin/phpunit --colors=always
           else
-            echo -e "\033[PHPUnit execution skipped.\033[0m"
+            echo -e "\033[0;33mPHPUnit execution skipped.\033[0m"
           fi
