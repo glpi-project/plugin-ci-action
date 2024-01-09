@@ -131,7 +131,7 @@ jobs:
         run: |
           if [[ -f "node_modules/.bin/jest" && -f "jest.config.js" ]]; then
             echo -e "\033[0;33mExecuting Jest...\033[0m"
-            NODE_OPTIONS="--experimental-vm-modules" node_modules/.bin/jest --colors --forceExit tests/js --verbose
+            NODE_OPTIONS="--experimental-vm-modules" node_modules/.bin/jest --colors --forceExit
           else
             echo -e "\033[0;33mJest execution skipped.\033[0m"
           fi
