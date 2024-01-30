@@ -1,0 +1,51 @@
+name: "Generate CI matrix"
+
+on:
+  workflow_call:
+    inputs:
+      glpi-version:
+        required: true
+        type: string
+    outputs:
+      matrix:
+        value: ${{ jobs.generate-ci-matrix.outputs.matrix }}
+
+jobs:
+  generate-ci-matrix:
+    name: "Generate CI matrix"
+    runs-on: "ubuntu-latest"
+    outputs:
+      matrix: ${{ steps.generate-ci-matrix.outputs.matrix }}
+    steps:
+      - name: "Generate CI matrix"
+        id: "generate-ci-matrix"
+        run: |
+          if [[ "${{ inputs.glpi-version }}" = "10.0.x" ]]; then
+            MATRIX='
+              {
+                "include": [
+                  {"glpi-version": "10.0.x", "php-version": "7.4", "db-image": "mysql:8.0"},
+                  {"glpi-version": "10.0.x", "php-version": "8.0", "db-image": "mysql:8.0"},
+                  {"glpi-version": "10.0.x", "php-version": "8.1", "db-image": "mysql:8.0"},
+                  {"glpi-version": "10.0.x", "php-version": "8.2", "db-image": "mysql:8.0"},
+                  {"glpi-version": "10.0.x", "php-version": "8.3", "db-image": "mysql:8.0"},
+                  {"glpi-version": "10.0.x", "php-version": "8.3", "db-image": "mysql:5.7"},
+                  {"glpi-version": "10.0.x", "php-version": "8.3", "db-image": "mariadb:10.2"},
+                  {"glpi-version": "10.0.x", "php-version": "8.3", "db-image": "mariadb:10.11"}
+                ]
+              }
+            '
+          elif [[ "${{ inputs.glpi-version }}" = "10.1.x" ]]; then
+            MATRIX='
+              {
+                "include": [
+                  {"glpi-version": "10.1.x", "php-version": "8.1", "db-image": "mysql:8.0"},
+                  {"glpi-version": "10.1.x", "php-version": "8.2", "db-image": "mysql:8.0"},
+                  {"glpi-version": "10.1.x", "php-version": "8.3", "db-image": "mysql:8.0"},
+                  {"glpi-version": "10.1.x", "php-version": "8.3", "db-image": "mariadb:10.5"},
+                  {"glpi-version": "10.1.x", "php-version": "8.3", "db-image": "mariadb:10.11"}
+                ]
+              }
+            '
+          fi
+          echo "matrix=$(echo $MATRIX | jq -c .)" >> $GITHUB_OUTPUT
