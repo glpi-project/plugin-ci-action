@@ -15,6 +15,8 @@ This workflow will execute the following actions as long as they are available o
 | PHPUnit | [phpunit/phpunit](https://packagist.org/packages/phpunit/phpunit) | `phpunit.xml` |
 | Jest | [jest](https://www.npmjs.com/package/jest) | `jest.config.js` |
 
+During the `PHPUnit` tests execution, GLPI will be accessible over HTTP (`http://localhost/`).
+
 ```yaml
 name: "Continuous integration"
 

@@ -21,9 +21,11 @@ jobs:
     name: "Continuous integration"
     runs-on: "ubuntu-latest"
     container:
-      image: "ghcr.io/glpi-project/githubactions-glpi:php-${{ inputs.php-version }}-glpi-${{ inputs.glpi-version }}"
+      image: "ghcr.io/glpi-project/githubactions-glpi-apache:php-${{ inputs.php-version }}-glpi-${{ inputs.glpi-version }}"
+      # `--user github-actions-runner` is mandatory to prevent rights issues on mounted volume during checkout operation
       options: >-
-        --volume ${{ github.workspace }}:/var/glpi/plugins:rw
+        --volume ${{ github.workspace }}:/var/www/glpi/plugins:rw
+        --user github-actions-runner
     services:
       db:
         image: "ghcr.io/glpi-project/githubactions-${{ inputs.db-image }}"
@@ -34,29 +36,41 @@ jobs:
           --shm-size=1g
     defaults:
       run:
-        shell: "bash"
-        working-directory: "/var/glpi/plugins/${{ inputs.plugin-key }}"
+        # By default, execute commands using the `www-data` user to prevent rights issues on GLPI generated files.
+        shell: "sudo --set-home --user=www-data bash --noprofile --norc -eo pipefail {0}"
+        working-directory: "/var/www/glpi/plugins/${{ inputs.plugin-key }}"
+    env:
+      CACHE_DIR: "/home/www-data/.cache/continuous-integration-workflow"
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v4"
         with:
             path: "${{ inputs.plugin-key }}"
-      - name: "Get dependencies cache directories"
-        id: "composer-cache"
+      - name: "Configure cache directories"
+        # Use default `bash` shell with `github-actions-runner` user
+        shell: "bash"
         run: |
-          echo "composer_cache_dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-          echo "npm_cache_dir=$(npm config get cache)" >> $GITHUB_OUTPUT
-      - name: "Restore dependencies cache"
+          sudo mkdir --parents "${{ env.CACHE_DIR }}/npm"
+          sudo mkdir --parents "${{ env.CACHE_DIR }}/composer"
+          sudo chown --recursive github-actions-runner "${{ env.CACHE_DIR }}"
+          npm config set cache "${{ env.CACHE_DIR }}/npm"
+          composer config cache-dir "${{ env.CACHE_DIR }}/composer"
+      - name: "Restore cache"
         uses: "actions/cache@v4"
         with:
           path: |
-            ${{ steps.composer-cache.outputs.composer_cache_dir }}
-            ${{ steps.composer-cache.outputs.npm_cache_dir }}
+            ${{ env.CACHE_DIR }}
           key: "${{ inputs.plugin-key }}-dependencies-${{ inputs.php-version }}-${{ github.job }}-${{ hashFiles('**/composer.lock', '**/package-lock.json') }}"
           restore-keys: |
             ${{ inputs.plugin-key }}-dependencies-${{ inputs.php-version }}-${{ github.job }}-
             ${{ inputs.plugin-key }}-dependencies-${{ inputs.php-version }}-
             ${{ inputs.plugin-key }}-dependencies-
+      - name: "Fix directories ACL"
+        # Use default `bash` shell with `github-actions-runner` user
+        shell: "bash"
+        run: |
+          sudo setfacl --recursive --modify u:www-data:rwx "${{ env.CACHE_DIR }}"
+          sudo setfacl --recursive --modify u:www-data:rwx /var/www/glpi/plugins
       - name: "Install dependencies"
         run: |
           if [[ -f "composer.json" ]]; then
@@ -114,11 +128,16 @@ jobs:
             echo -e "\033[0;33mLicence headers checks skipped.\033[0m"
           fi
       - name: "Install plugin"
-        working-directory: "/var/glpi"
+        working-directory: "/var/www/glpi"
         run: |
           bin/console database:install --ansi --no-interaction --db-name=glpi --db-host=db --db-user=root --strict-configuration
           bin/console plugin:install --ansi --no-interaction --username=glpi ${{ inputs.plugin-key }}
           bin/console plugin:activate --ansi --no-interaction ${{ inputs.plugin-key }}
+      - name: "Run apache"
+        # Use default `bash` shell with `github-actions-runner` user
+        shell: "bash"
+        run: |
+          sudo service apache2 start
       - name: "PHPUnit"
         run: |
           if [[ -f "vendor/bin/phpunit" && -f "phpunit.xml" ]]; then
