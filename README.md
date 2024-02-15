@@ -48,9 +48,8 @@ The `db-image` parameter is a combination of the DB server engine (`mysql`, `mar
 
 ## Generate CI matrix
 
-This workflow can be used to generate a matrix that contains all the PHP/SQL versions that are supported by the target GLPI version.
-You can use it in combination with the `Continuous Integration` workflow to execute the continuous integration
-test suite on all PHP/SQL versions supported by the target version of GLPI, as shown in the example below.
+This workflow can be used to generate a matrix that contains the default PHP/SQL versions that are supported by the target GLPI version.
+You can use it in combination with the `Continuous Integration` workflow, as shown in the example below.
 
 ```yaml
 name: "Continuous integration"
@@ -76,6 +75,10 @@ jobs:
     uses: "glpi-project/plugin-ci-workflows/.github/workflows/generate-ci-matrix.yml@v1"
     with:
       glpi-version: "10.0.x"
+
+      # Whether the complete compatibility matrix should be generated.
+      # Default: false
+      complete-matrix: true
   ci:
     name: "GLPI ${{ matrix.glpi-version }} - php:${{ matrix.php-version }} - ${{ matrix.db-image }}"
     needs: "generate-ci-matrix"
