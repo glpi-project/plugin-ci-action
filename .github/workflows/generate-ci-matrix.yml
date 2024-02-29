@@ -50,16 +50,16 @@ jobs:
                 }
               '
             fi
-          elif [[ "${{ inputs.glpi-version }}" = "10.1.x" ]]; then
+          elif [[ "${{ inputs.glpi-version }}" = "11.0.x" ]]; then
             if [[ "${{ inputs.complete-matrix && 'true' || 'false' }}" = "true" ]]; then
               MATRIX='
                 {
                   "include": [
-                    {"glpi-version": "10.1.x", "php-version": "8.1", "db-image": "mysql:8.0"},
-                    {"glpi-version": "10.1.x", "php-version": "8.2", "db-image": "mysql:8.0"},
-                    {"glpi-version": "10.1.x", "php-version": "8.3", "db-image": "mysql:8.0"},
-                    {"glpi-version": "10.1.x", "php-version": "8.3", "db-image": "mariadb:10.5"},
-                    {"glpi-version": "10.1.x", "php-version": "8.3", "db-image": "mariadb:10.11"}
+                    {"glpi-version": "11.0.x", "php-version": "8.1", "db-image": "mysql:8.0"},
+                    {"glpi-version": "11.0.x", "php-version": "8.2", "db-image": "mysql:8.0"},
+                    {"glpi-version": "11.0.x", "php-version": "8.3", "db-image": "mysql:8.0"},
+                    {"glpi-version": "11.0.x", "php-version": "8.3", "db-image": "mariadb:10.5"},
+                    {"glpi-version": "11.0.x", "php-version": "8.3", "db-image": "mariadb:10.11"}
                   ]
                 }
               '
@@ -67,8 +67,8 @@ jobs:
               MATRIX='
                 {
                   "include": [
-                    {"glpi-version": "10.1.x", "php-version": "8.1", "db-image": "mariadb:10.5"},
-                    {"glpi-version": "10.1.x", "php-version": "8.3", "db-image": "mariadb:10.11"}
+                    {"glpi-version": "11.0.x", "php-version": "8.1", "db-image": "mariadb:10.5"},
+                    {"glpi-version": "11.0.x", "php-version": "8.3", "db-image": "mariadb:10.11"}
                   ]
                 }
               '
