@@ -37,7 +37,7 @@ jobs:
       php-version: "8.1"
 
       # The database docker image on which to run the tests.
-      db-image: "10.6"
+      db-image: "mariadb:11.4"
 ```
 
 The available `glpi-version`/`php-version` combinations corresponds to the `ghcr.io/glpi-project/githubactions-glpi-apache` images tags
