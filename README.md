@@ -8,6 +8,7 @@ This workflow will execute the following actions as long as they are available o
 | -------- | -------- | -------- |
 | PHP Parallel Lint | [php-parallel-lint/php-parallel-lint](https://packagist.org/packages/php-parallel-lint/php-parallel-lint) | |
 | PHP CodeSniffer | [squizlabs/php_codesniffer](https://packagist.org/packages/squizlabs/php_codesniffer) | `.phpcs.xml` |
+| PHP-CS-Fixer | [friendsofphp/php-cs-fixer](https://packagist.org/packages/friendsofphp/php-cs-fixer) | `.php-cs-fixer.php` |
 | PHPStan | [phpstan/phpstan](https://packagist.org/packages/phpstan/phpstan) | `phpstan.neon` |
 | ESLint | [eslint](https://www.npmjs.com/package/eslint) | `.eslintrc.js` |
 | Stylelint | [stylelint](https://www.npmjs.com/package/stylelint) | `.stylelintrc.js` |

@@ -95,6 +95,14 @@ jobs:
           else
             echo -e "\033[0;33mPHP CodeSniffer execution skipped.\033[0m"
           fi
+      - name: "PHP-CS-Fixer"
+        run: |
+          if [[ -f "vendor/bin/php-cs-fixer" && -f ".php-cs-fixer.php" ]]; then
+            echo -e "\033[0;33mExecuting PHP-CS-Fixer...\033[0m"
+            vendor/bin/php-cs-fixer check --config=.php-cs-fixer.php --no-interaction --show-progress none
+          else
+            echo -e "\033[0;33mPHP-CS-Fixer execution skipped.\033[0m"
+          fi
       - name: "PHPStan"
         run: |
           if [[ -f "vendor/bin/phpstan" && -f "phpstan.neon" ]]; then
