@@ -10,7 +10,7 @@ This workflow will execute the following actions as long as they are available o
 | PHP CodeSniffer | [squizlabs/php_codesniffer](https://packagist.org/packages/squizlabs/php_codesniffer) | `.phpcs.xml` |
 | PHP-CS-Fixer | [friendsofphp/php-cs-fixer](https://packagist.org/packages/friendsofphp/php-cs-fixer) | `.php-cs-fixer.php` |
 | PHPStan | [phpstan/phpstan](https://packagist.org/packages/phpstan/phpstan) | `phpstan.neon` |
-| ESLint | [eslint](https://www.npmjs.com/package/eslint) | `.eslintrc.js` |
+| ESLint | [eslint](https://www.npmjs.com/package/eslint) | `eslint.config.js` or `eslint.config.mjs` or `eslint.config.cjs` or `.eslintrc.js` |
 | Stylelint | [stylelint](https://www.npmjs.com/package/stylelint) | `.stylelintrc.js` |
 | Licence headers check | [glpi-project/tools](https://packagist.org/packages/glpi-project/tools) | `tools/HEADER` |
 | PHPUnit | [phpunit/phpunit](https://packagist.org/packages/phpunit/phpunit) | `phpunit.xml` |
