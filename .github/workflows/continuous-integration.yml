@@ -138,7 +138,7 @@ jobs:
       - name: "Install plugin"
         working-directory: "/var/www/glpi"
         run: |
-          bin/console database:install --ansi --no-interaction --db-name=glpi --db-host=db --db-user=root --strict-configuration
+          bin/console database:install --ansi --no-interaction --db-name=glpi --db-host=db --db-user=root --db-password="" --strict-configuration
           bin/console plugin:install --ansi --no-interaction --username=glpi ${{ inputs.plugin-key }}
           bin/console plugin:activate --ansi --no-interaction ${{ inputs.plugin-key }}
       - name: "Run apache"
